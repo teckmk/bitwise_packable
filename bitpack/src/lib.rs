@@ -2,10 +2,12 @@ extern crate proc_macro;
 extern crate quote;
 extern crate syn;
 use proc_macro::TokenStream;
-use quote::quote;
+use quote::{quote, ToTokens};
 use syn::{parse_macro_input, Attribute, Data, DeriveInput, Field, Lit, Meta, NestedMeta, Type};
-
-fn get_packing_type(attrs: &[Attribute]) -> Option<String> {
+fn get_attribute_value<T>(attrs: &[Attribute], key: &str) -> Option<T>
+where
+    T: syn::parse::Parse,
+{
     for attr in attrs {
         // Parse the attribute to Meta
         let meta = attr.parse_meta().ok()?;
@@ -20,51 +22,32 @@ fn get_packing_type(attrs: &[Attribute]) -> Option<String> {
             continue;
         }
 
-        // Find the `size` key-value pair
+        // Find the specified key-value pair
         for nested_meta in meta_list.nested.iter() {
             if let NestedMeta::Meta(Meta::NameValue(name_value)) = nested_meta {
-                if name_value.path.is_ident("size") {
-                    if let Lit::Str(lit_str) = &name_value.lit {
-                        return Some(lit_str.value());
-                    }
+                if name_value.path.is_ident(key) {
+                    return syn::parse2(name_value.lit.to_token_stream()).ok();
                 }
             }
         }
     }
 
     None
+}
+
+fn get_packing_type(attrs: &[Attribute]) -> Option<String> {
+    get_attribute_value::<Lit>(attrs, "size").and_then(|lit| match lit {
+        Lit::Str(lit_str) => Some(lit_str.value()),
+        _ => None,
+    })
 }
 
 fn get_overflow_type(attrs: &[Attribute]) -> Option<bool> {
-    for attr in attrs {
-        // Parse the attribute to Meta
-        let meta = attr.parse_meta().ok()?;
-
-        // Check if the attribute is a list
-        let Meta::List(meta_list) = meta else {
-            continue;
-        };
-
-        // Check if the attribute is `bitwise_packable`
-        if !meta_list.path.is_ident("bitpack") {
-            continue;
-        }
-
-        // Find the `overflow` key-value pair
-        for nested_meta in meta_list.nested.iter() {
-            if let NestedMeta::Meta(Meta::NameValue(name_value)) = nested_meta {
-                if name_value.path.is_ident("overflow") {
-                    if let Lit::Bool(lit_bool) = &name_value.lit {
-                        return Some(lit_bool.value());
-                    }
-                }
-            }
-        }
-    }
-
-    None
+    get_attribute_value::<Lit>(attrs, "overflow").and_then(|lit| match lit {
+        Lit::Bool(lit_bool) => Some(lit_bool.value),
+        _ => None,
+    })
 }
-
 #[proc_macro_derive(BitwisePackable, attributes(bitpack))]
 pub fn bitwise_packable(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
