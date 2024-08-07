@@ -153,4 +153,4 @@ This project is licensed under the MIT License.
 
 ## Contact
 
-For questions or feedback, please contact (Abdullah Yasir)[https://linkedin.com/in/abdullah-yasir-itech].
+For questions or feedback, please contact [me here](https://linkedin.com/in/abdullah-yasir-itech).
