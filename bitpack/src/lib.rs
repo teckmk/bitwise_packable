@@ -48,6 +48,28 @@ fn get_overflow_type(attrs: &[Attribute]) -> Option<bool> {
         _ => None,
     })
 }
+
+/// Macro to derive bitwise packing and unpacking methods for a struct with boolean fields.
+///
+/// # Attributes
+///
+/// - `bitpack(size = "i32", overflow = true)`: Configures the packing options.
+///     - `size`: Specifies the type of integer to use for packing (`"i8"`, `"i16"`, `"i32"`, `"i64"`, or `"auto"`).
+///     - `overflow`: A boolean indicating whether to allow packing more boolean fields than the bit capacity of the chosen integer type (default is `false`).
+///
+/// # Example
+///
+/// ```rust
+/// use bitpack::BitwisePackable;
+///
+/// #[derive(BitwisePackable)]
+/// #[bitpack(size = "i32", overflow = true)]
+/// struct MyStruct {
+///     field1: bool,
+///     field2: bool,
+///     field3: bool,
+/// }
+/// ```
 #[proc_macro_derive(BitwisePackable, attributes(bitpack))]
 pub fn bitwise_packable(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
