@@ -1,5 +1,5 @@
 pub struct Bitfield {
-    parts: Vec<u64>, // Holds the bit values
+    pub parts: Vec<u64>, // Holds the bit values
 }
 
 impl Bitfield {
