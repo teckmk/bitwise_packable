@@ -57,6 +57,8 @@ pub fn bitwise_packable(input: TokenStream) -> TokenStream {
         .map(|f| f.ident.as_ref().unwrap())
         .collect::<Vec<_>>();
 
+    let fields_idx: Vec<usize> = (0..num_fields).collect();
+
     let attrs = get_packing_type(&input.attrs);
     let size = attrs.unwrap_or_else(|| "auto".to_string());
 
@@ -177,34 +179,33 @@ pub fn bitwise_packable(input: TokenStream) -> TokenStream {
             quote! {
                 impl #name {
                     pub fn pack(&self) -> Vec<u64> {
-                        let mut result = vec![0u64; (#num_fields + 63) / 64];
+                        let num_fields = #num_fields;
+                        let mut bitfield = Bitfield::new(num_fields);
+
                         let mut bit_index = 0;
                         #(
-                            for j in 0..64 {
-                                if bit_index >= #num_fields {
-                                    break;
-                                }
-                                result[bit_index / 64] |= (self.#field_names[bit_index] as u64) << (bit_index % 64);
-                                bit_index += 1;
-                            }
+                            bitfield.set(bit_index, self.#field_names);
+                            bit_index += 1;
                         )*
-                        result
+
+                        bitfield.parts
                     }
 
                     pub fn unpack(packed: Vec<u64>) -> Self {
-                        let mut bit_index = 0;
-                        let mut booleans = vec![false; #num_fields];
-                        for value in packed.iter() {
-                            for j in 0..64 {
-                                if bit_index >= #num_fields {
-                                    break;
-                                }
-                                booleans[bit_index] = (value & (1 << j)) != 0;
-                                bit_index += 1;
-                            }
+                        let num_fields = #num_fields;
+                        let mut bitfield = Bitfield {
+                            parts: packed,
+                        };
+
+                        let mut booleans = vec![false; num_fields];
+                        for i in 0..num_fields {
+                            booleans[i] = bitfield.get(i);
                         }
+
                         Self {
-                            #(#field_names: booleans[#field_names]),*
+                            #(
+                                #field_names: booleans[#fields_idx],
+                            )*
                         }
                     }
                 }

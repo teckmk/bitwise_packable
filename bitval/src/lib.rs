@@ -13,6 +13,9 @@ impl Bitfield {
 
     /// Sets the value of a specific bit.
     pub fn set(&mut self, index: usize, value: bool) {
+        if index >= self.parts.len() * 64 {
+            panic!("Index out of bounds");
+        }
         let part = index / 64;
         let bit = index % 64;
         if value {
@@ -24,6 +27,9 @@ impl Bitfield {
 
     /// Gets the value of a specific bit.
     pub fn get(&self, index: usize) -> bool {
+        if index >= self.parts.len() * 64 {
+            panic!("Index out of bounds");
+        }
         let part = index / 64;
         let bit = index % 64;
         (self.parts[part] & (1 << bit)) != 0
