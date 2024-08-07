@@ -1,2 +1,9 @@
 [workspace]
 members=["bitpack", "bitval"]
+
+
+[workspace.package]
+authors = ["Abdullah Yasir"]
+version = "0.1.0"
+description = "For packing booleans in variables using bitwise operations"
+documentation = "https://example.com/bar"
