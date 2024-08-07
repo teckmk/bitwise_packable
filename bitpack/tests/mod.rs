@@ -3,8 +3,8 @@ extern crate bitval;
 
 #[cfg(test)]
 mod tests {
-    use bitpack::BitwisePackable;
     use super::*;
+    use bitpack::BitwisePackable;
     use bitval::Bitfield;
 
     #[test]
@@ -17,7 +17,11 @@ mod tests {
             c: bool,
         }
 
-        let example = Example { a: true, b: false, c: true };
+        let example = Example {
+            a: true,
+            b: false,
+            c: true,
+        };
         let packed = Example::pack(&example);
         assert_eq!(packed, 0b00000101); // 5 in decimal
         let unpacked = Example::unpack(packed);
@@ -37,7 +41,12 @@ mod tests {
             d: bool,
         }
 
-        let example = Example { a: true, b: false, c: true, d: true };
+        let example = Example {
+            a: true,
+            b: false,
+            c: true,
+            d: true,
+        };
         let packed = Example::pack(&example);
         assert_eq!(packed, 0b0000000000001101); // 13 in decimal
         let unpacked = Example::unpack(packed);
@@ -59,7 +68,13 @@ mod tests {
             e: bool,
         }
 
-        let example = Example { a: true, b: false, c: true, d: true, e: false };
+        let example = Example {
+            a: true,
+            b: false,
+            c: true,
+            d: true,
+            e: false,
+        };
         let packed = Example::pack(&example);
         assert_eq!(packed, 0b00000000000000000000000000010101); // 21 in decimal
         let unpacked = Example::unpack(packed);
@@ -85,7 +100,16 @@ mod tests {
             h: bool,
         }
 
-        let example = Example { a: true, b: false, c: true, d: true, e: false, f: true, g: false, h: true };
+        let example = Example {
+            a: true,
+            b: false,
+            c: true,
+            d: true,
+            e: false,
+            f: true,
+            g: false,
+            h: true,
+        };
         let packed = Example::pack(&example);
         assert_eq!(packed, 0b1011010101010101); // 0xB5B5 in hexadecimal
         let unpacked = Example::unpack(packed);
@@ -100,7 +124,9 @@ mod tests {
     }
 
     #[test]
-    #[should_panic(expected = "Overflow occurred during packing: struct 'OverflowExample' has more boolean fields than can be packed in an u8 (8 bits).")]
+    #[should_panic(
+        expected = "Overflow occurred during packing: struct 'OverflowExample' has more boolean fields than can be packed in an u8 (8 bits)."
+    )]
     fn test_overflow_packing_u8() {
         #[derive(BitwisePackable)]
         #[bitpack(size = "i8", overflow = false)]
@@ -116,12 +142,24 @@ mod tests {
             i: bool,
         }
 
-        let example = OverflowExample { a: true, b: false, c: true, d: true, e: false, f: true, g: false, h: true, i: false };
+        let example = OverflowExample {
+            a: true,
+            b: false,
+            c: true,
+            d: true,
+            e: false,
+            f: true,
+            g: false,
+            h: true,
+            i: false,
+        };
         OverflowExample::pack(&example); // This should panic due to overflow
     }
 
     #[test]
-    #[should_panic(expected = "Overflow occurred during unpacking: struct 'OverflowExample' has more boolean fields than can be unpacked from an u8 (8 bits).")]
+    #[should_panic(
+        expected = "Overflow occurred during unpacking: struct 'OverflowExample' has more boolean fields than can be unpacked from an u8 (8 bits)."
+    )]
     fn test_overflow_unpacking_u8() {
         #[derive(BitwisePackable)]
         #[bitpack(size = "i8", overflow = false)]
@@ -152,7 +190,13 @@ mod tests {
             e: bool,
         }
 
-        let example = Example { a: true, b: false, c: true, d: true, e: false };
+        let example = Example {
+            a: true,
+            b: false,
+            c: true,
+            d: true,
+            e: false,
+        };
         let packed = Example::pack(&example);
         let unpacked = Example::unpack(packed);
         assert_eq!(unpacked.a, true);
@@ -163,7 +207,9 @@ mod tests {
     }
 
     #[test]
-    #[should_panic(expected = "Overflow occurred during packing: struct 'OverflowDynamic' has more boolean fields than can be packed in the provided Bitfield size.")]
+    #[should_panic(
+        expected = "Overflow occurred during packing: struct 'OverflowDynamic' has more boolean fields than can be packed in the provided Bitfield size."
+    )]
     fn test_overflow_packing_auto() {
         #[derive(BitwisePackable)]
         #[bitpack(size = "auto", overflow = false)]
@@ -187,14 +233,30 @@ mod tests {
         }
 
         let example = OverflowDynamic {
-            a: true, b: false, c: true, d: true, e: false, f: true, g: false, h: true,
-            i: false, j: true, k: false, l: true, m: true, n: false, o: true, p: false,
+            a: true,
+            b: false,
+            c: true,
+            d: true,
+            e: false,
+            f: true,
+            g: false,
+            h: true,
+            i: false,
+            j: true,
+            k: false,
+            l: true,
+            m: true,
+            n: false,
+            o: true,
+            p: false,
         };
         OverflowDynamic::pack(&example); // This should panic due to overflow
     }
 
     #[test]
-    #[should_panic(expected = "Overflow occurred during unpacking: struct 'OverflowDynamic' has more boolean fields than can be unpacked from the provided Bitfield size.")]
+    #[should_panic(
+        expected = "Overflow occurred during unpacking: struct 'OverflowDynamic' has more boolean fields than can be unpacked from the provided Bitfield size."
+    )]
     fn test_overflow_unpacking_auto() {
         #[derive(BitwisePackable)]
         #[bitpack(size = "auto", overflow = false)]
