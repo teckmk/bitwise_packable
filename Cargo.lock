@@ -6,6 +6,7 @@ version = 3
 name = "bitpack"
 version = "0.1.0"
 dependencies = [
+ "bitval",
  "proc-macro2",
  "quote",
  "syn",
@@ -14,6 +15,9 @@ dependencies = [
 [[package]]
 name = "bitval"
 version = "0.1.0"
+dependencies = [
+ "bitpack",
+]
 
 [[package]]
 name = "proc-macro2"

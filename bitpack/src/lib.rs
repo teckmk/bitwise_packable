@@ -319,7 +319,7 @@ pub fn bitwise_packable(input: TokenStream) -> TokenStream {
                         let mut bitfield = Bitfield::new(num_fields);
 
                         // Single overflow check
-                        if num_fields > bitfield.bit_size() && !#overflow {
+                        if num_fields > bitfield.parts.len() * 64 && !#overflow {
                             panic!(
                                 "Overflow occurred during packing: struct '{}' has more boolean fields than can be packed in the provided Bitfield size.",
                                 stringify!(#name)
@@ -331,7 +331,7 @@ pub fn bitwise_packable(input: TokenStream) -> TokenStream {
                             if bit_index < num_fields {
                                 bitfield.set(bit_index, self.#field_names);
                                 bit_index += 1;
-                            } // No additional else condition needed
+                            }
                         )*
 
                         bitfield.parts
@@ -344,7 +344,7 @@ pub fn bitwise_packable(input: TokenStream) -> TokenStream {
                         };
 
                         // Overflow check
-                        if num_fields > bitfield.bit_size() && !#overflow {
+                        if num_fields > bitfield.parts.len() * 64 && !#overflow {
                             panic!(
                                 "Overflow occurred during unpacking: struct '{}' has more boolean fields than can be unpacked from the provided Bitfield size.",
                                 stringify!(#name)
@@ -353,11 +353,7 @@ pub fn bitwise_packable(input: TokenStream) -> TokenStream {
 
                         let mut booleans = vec![false; num_fields];
                         for i in 0..num_fields {
-                            booleans[i] = if i < bitfield.bit_size() {
-                                bitfield.get(i)
-                            } else {
-                                false
-                            };
+                            booleans[i] = bitfield.get(i);
                         }
 
                         Self {
