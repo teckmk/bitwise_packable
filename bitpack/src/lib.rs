@@ -1,4 +1,6 @@
 extern crate proc_macro;
+extern crate quote;
+extern crate syn;
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::{parse_macro_input, Attribute, Data, DeriveInput, Field, Lit, Meta, NestedMeta, Type};
@@ -13,8 +15,8 @@ fn get_packing_type(attrs: &[Attribute]) -> Option<String> {
             continue;
         };
 
-        // Check if the attribute is `bitwise_packable`
-        if !meta_list.path.is_ident("bitwise_packable") {
+        // Check if the attribute is `bitpack`
+        if !meta_list.path.is_ident("bitpack") {
             continue;
         }
 
@@ -44,7 +46,7 @@ fn get_overflow_type(attrs: &[Attribute]) -> Option<bool> {
         };
 
         // Check if the attribute is `bitwise_packable`
-        if !meta_list.path.is_ident("bitwise_packable") {
+        if !meta_list.path.is_ident("bitpack") {
             continue;
         }
 
@@ -63,7 +65,7 @@ fn get_overflow_type(attrs: &[Attribute]) -> Option<bool> {
     None
 }
 
-#[proc_macro_derive(BitwisePackable, attributes(bitwise_packable))]
+#[proc_macro_derive(BitwisePackable, attributes(bitpack))]
 pub fn bitwise_packable(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
     let name = &input.ident;
