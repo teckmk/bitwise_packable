@@ -82,6 +82,12 @@ pub fn bitwise_packable(input: TokenStream) -> TokenStream {
         "i8" => (
             quote! {
                 impl #name {
+                    /// Packs the boolean fields of the struct into an 8-bit unsigned integer (u8).
+                    /// This method sets each bit in the resulting u8 to represent each boolean field.
+                    /// If the struct has more than 8 boolean fields, and overflow is not allowed, it will panic.
+                    ///
+                    /// # Returns
+                    /// - A `u8` where each bit represents the state of a boolean field in the struct.
                     pub fn pack(&self) -> u8 {
                         let mut result = 0u8;
                         let mut bit_index = 0;
@@ -104,6 +110,15 @@ pub fn bitwise_packable(input: TokenStream) -> TokenStream {
                         result
                     }
 
+                    /// Unpacks an 8-bit unsigned integer (u8) into the boolean fields of the struct.
+                    /// This method reads each bit from the given u8 and assigns it to the corresponding boolean field.
+                    /// If the struct has more than 8 boolean fields, and overflow is not allowed, it will panic.
+                    ///
+                    /// # Parameters
+                    /// - `packed`: A `u8` where each bit represents the state of a boolean field to be unpacked.
+                    ///
+                    /// # Returns
+                    /// - A new instance of the struct with its boolean fields set according to the bits in `packed`.
                     pub fn unpack(packed: u8) -> Self {
                         let mut bit_index = 0;
 
@@ -135,6 +150,12 @@ pub fn bitwise_packable(input: TokenStream) -> TokenStream {
         "i16" => (
             quote! {
                 impl #name {
+                    /// Packs the boolean fields of the struct into a 16-bit unsigned integer (u16).
+                    /// This method sets each bit in the resulting u16 to represent each boolean field.
+                    /// If the struct has more than 16 boolean fields, and overflow is not allowed, it will panic.
+                    ///
+                    /// # Returns
+                    /// - A `u16` where each bit represents the state of a boolean field in the struct.
                     pub fn pack(&self) -> u16 {
                         let mut result = 0u16;
                         let mut bit_index = 0;
@@ -157,6 +178,15 @@ pub fn bitwise_packable(input: TokenStream) -> TokenStream {
                         result
                     }
 
+                    /// Unpacks a 16-bit unsigned integer (u16) into the boolean fields of the struct.
+                    /// This method reads each bit from the given u16 and assigns it to the corresponding boolean field.
+                    /// If the struct has more than 16 boolean fields, and overflow is not allowed, it will panic.
+                    ///
+                    /// # Parameters
+                    /// - `packed`: A `u16` where each bit represents the state of a boolean field to be unpacked.
+                    ///
+                    /// # Returns
+                    /// - A new instance of the struct with its boolean fields set according to the bits in `packed`.
                     pub fn unpack(packed: u16) -> Self {
                         let mut bit_index = 0;
 
@@ -189,6 +219,12 @@ pub fn bitwise_packable(input: TokenStream) -> TokenStream {
         "i32" => (
             quote! {
                 impl #name {
+                    /// Packs the boolean fields of the struct into a 32-bit unsigned integer (u32).
+                    /// This method sets each bit in the resulting u32 to represent each boolean field.
+                    /// If the struct has more than 32 boolean fields, and overflow is not allowed, it will panic.
+                    ///
+                    /// # Returns
+                    /// - A `u32` where each bit represents the state of a boolean field in the struct.
                     pub fn pack(&self) -> u32 {
                         let mut result = 0u32;
                         let mut bit_index = 0;
@@ -211,6 +247,15 @@ pub fn bitwise_packable(input: TokenStream) -> TokenStream {
                         result
                     }
 
+                    /// Unpacks a 32-bit unsigned integer (u32) into the boolean fields of the struct.
+                    /// This method reads each bit from the given u32 and assigns it to the corresponding boolean field.
+                    /// If the struct has more than 32 boolean fields, and overflow is not allowed, it will panic.
+                    ///
+                    /// # Parameters
+                    /// - `packed`: A `u32` where each bit represents the state of a boolean field to be unpacked.
+                    ///
+                    /// # Returns
+                    /// - A new instance of the struct with its boolean fields set according to the bits in `packed`.
                     pub fn unpack(packed: u32) -> Self {
                         let mut bit_index = 0;
 
@@ -243,6 +288,12 @@ pub fn bitwise_packable(input: TokenStream) -> TokenStream {
         "i64" => (
             quote! {
                 impl #name {
+                    /// Packs the boolean fields of the struct into a 64-bit unsigned integer (u64).
+                    /// This method sets each bit in the resulting u64 to represent each boolean field.
+                    /// If the struct has more than 64 boolean fields, and overflow is not allowed, it will panic.
+                    ///
+                    /// # Returns
+                    /// - A `u64` where each bit represents the state of a boolean field in the struct.
                     pub fn pack(&self) -> u64 {
                         let mut result = 0u64;
                         let mut bit_index = 0;
@@ -265,6 +316,15 @@ pub fn bitwise_packable(input: TokenStream) -> TokenStream {
                         result
                     }
 
+                    /// Unpacks a 64-bit unsigned integer (u64) into the boolean fields of the struct.
+                    /// This method reads each bit from the given u64 and assigns it to the corresponding boolean field.
+                    /// If the struct has more than 64 boolean fields, and overflow is not allowed, it will panic.
+                    ///
+                    /// # Parameters
+                    /// - `packed`: A `u64` where each bit represents the state of a boolean field to be unpacked.
+                    ///
+                    /// # Returns
+                    /// - A new instance of the struct with its boolean fields set according to the bits in `packed`.
                     pub fn unpack(packed: u64) -> Self {
                         let mut bit_index = 0;
 
@@ -297,6 +357,13 @@ pub fn bitwise_packable(input: TokenStream) -> TokenStream {
         _ => (
             quote! {
                 impl #name {
+                    /// Packs the boolean fields of the struct into a vector of 64-bit unsigned integers (Vec<u64>).
+                    /// This method sets each bit in the resulting vector to represent each boolean field.
+                    /// The size of the vector is determined by the number of boolean fields divided by 64, rounded up.
+                    /// If overflow is not allowed, it will panic if the struct has more boolean fields than can be packed in the vector.
+                    ///
+                    /// # Returns
+                    /// - A `Vec<u64>` where each bit represents the state of a boolean field in the struct.
                     pub fn pack(&self) -> Vec<u64> {
                         let num_fields = #num_fields;
                         let mut bitfield = Bitfield::new(num_fields);
@@ -320,6 +387,15 @@ pub fn bitwise_packable(input: TokenStream) -> TokenStream {
                         bitfield.parts
                     }
 
+                    /// Unpacks a vector of 64-bit unsigned integers (Vec<u64>) into the boolean fields of the struct.
+                    /// This method reads each bit from the given vector and assigns it to the corresponding boolean field.
+                    /// If overflow is not allowed, it will panic if the struct has more boolean fields than can be unpacked from the vector.
+                    ///
+                    /// # Parameters
+                    /// - `packed`: A `Vec<u64>` where each bit represents the state of a boolean field to be unpacked.
+                    ///
+                    /// # Returns
+                    /// - A new instance of the struct with its boolean fields set according to the bits in `packed`.
                     pub fn unpack(packed: Vec<u64>) -> Self {
                         let num_fields = #num_fields;
                         let bitfield = Bitfield {
