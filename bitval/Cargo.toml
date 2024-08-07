@@ -5,4 +5,5 @@ authors.workspace = true
 description.workspace = true
 documentation.workspace = true
 
-[dependencies]
+[dev-dependencies]
+bitpack = {path = "../bitpack"}
