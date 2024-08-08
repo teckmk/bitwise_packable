@@ -113,7 +113,10 @@ mod tests {
             h: true,
         };
         let packed = Example::pack(&example);
-        assert_eq!(packed, 0b00000000000000000000000000000000000000000000000000000010101101); // 0xB5B5 in hexadecimal
+        assert_eq!(
+            packed,
+            0b00000000000000000000000000000000000000000000000000000010101101
+        ); // 0xB5B5 in hexadecimal
         let unpacked = Example::unpack(packed);
         assert_eq!(unpacked.a, true);
         assert_eq!(unpacked.b, false);
