@@ -2,11 +2,13 @@ name: CI
 
 on:
   push:
-    tags:
-      - 'v*.*.*' # Match version tags like v1.0.0
     branches:
       - main
+    tags:
+      - 'v*.*.*'
+
   pull_request:
+  workflow_call:
 
 
 env:
@@ -48,5 +50,13 @@ jobs:
       - run: cargo build --workspace --verbose
       - run: cargo test --workspace --verbose
 
+  build_and_deploy:
+    name: Build and Deploy to Crates.io
+    if: startsWith(github.event.workflow_run.head_sha, 'refs/tags/')
+    needs:
+      - build_and_test
+    uses: ./.github/workflows/cd.yml
+    with:
+      tag_version: ${{ github.ref_name }}
 
 
