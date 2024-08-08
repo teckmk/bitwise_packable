@@ -25,8 +25,8 @@ jobs:
     - name: Verify tag version matches Cargo.toml version
       run: |
         tag_version=${{ inputs.tag_name }}
-        if [ "$tag_version" != "$cargo_version" ]; then
-          echo "Tag version (v$tag_version) does not match Cargo.toml version ($cargo_version)"
+        if [ "$tag_version" != "v$cargo_version" ]; then
+          echo "Tag version ($tag_version) does not match Cargo.toml version (v$cargo_version)"
           exit 1
         fi
 
