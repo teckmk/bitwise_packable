@@ -3,9 +3,10 @@ members=["bitpack", "bitval"]
 
 
 [workspace.package]
-authors = ["Abdullah Yasir"]
+authors = ["Abdullah Yasir <skmaky4@gmail.com>"]
 version = "0.1.0"
+license = "MIT"
 description = "For packing booleans in variables using bitwise operations"
-documentation = "https://example.com/bar"
+documentation = "https://github.com/teckmk/bitwise_packable/blob/main/bitpack/README.md"
 
 

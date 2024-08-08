@@ -2,6 +2,7 @@
 name = "bitpack"
 version.workspace = true
 authors.workspace = true
+license.workspace = true
 description.workspace = true
 documentation.workspace = true
 

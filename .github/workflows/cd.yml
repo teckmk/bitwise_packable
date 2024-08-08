@@ -1,9 +1,10 @@
 name: Continuous Deployment
 
 on:
-  push:
-    tags:
-      - 'v*.*.*' # Match version tags like v1.0.0
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
 
 env:
   CARGO_TERM_COLOR: always
@@ -11,6 +12,11 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Run this only on tag push after success of CI
+    if: |
+      github.event_name == 'workflow_run' && 
+        github.event.workflow_run.conclusion == 'success' &&
+        startsWith(github.event.workflow_run.head_branch, 'refs/tags/')
 
     steps:
     - uses: actions/checkout@v4
