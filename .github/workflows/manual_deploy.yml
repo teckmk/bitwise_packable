@@ -20,14 +20,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Git user
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-
       - name: Create and push tag
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git tag -a "${{ github.event.inputs.tag_name }}" -m "${{ github.event.inputs.tag_message }}"
-          git push origin "${{ github.event.inputs.tag_name }}"
+          const tag = '${{ inputs.tag_name }}';
+          const msg = '${{ inputs.tag_message }}';
+          await github.rest.git.createTag({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            tag: tag,
+            sha: context.sha,
+            message: msg,
+          });
+          await github.rest.git.createRef({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            ref: `refs/tags/${tag}`,
+            sha: context.sha,
+          });
