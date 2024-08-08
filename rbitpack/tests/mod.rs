@@ -1,17 +1,17 @@
 #![allow(dead_code)]
 
-extern crate bitpack;
+extern crate rbitpack;
 extern crate bitval;
 
 #[cfg(test)]
 mod tests {
-    use bitpack::BitwisePackable;
+    use rbitpack::BitwisePackable;
     use bitval::Bitfield;
 
     #[test]
     fn test_pack_unpack_u8() {
         #[derive(BitwisePackable)]
-        #[bitpack(size = "i8")]
+        #[rbitpack(size = "i8")]
         struct Example {
             a: bool,
             b: bool,
@@ -34,7 +34,7 @@ mod tests {
     #[test]
     fn test_pack_unpack_u16() {
         #[derive(BitwisePackable)]
-        #[bitpack(size = "i16")]
+        #[rbitpack(size = "i16")]
         struct Example {
             a: bool,
             b: bool,
@@ -60,7 +60,7 @@ mod tests {
     #[test]
     fn test_pack_unpack_u32() {
         #[derive(BitwisePackable)]
-        #[bitpack(size = "i32")]
+        #[rbitpack(size = "i32")]
         struct Example {
             a: bool,
             b: bool,
@@ -90,7 +90,7 @@ mod tests {
     #[test]
     fn test_pack_unpack_u64() {
         #[derive(BitwisePackable)]
-        #[bitpack(size = "i64")]
+        #[rbitpack(size = "i64")]
         struct Example {
             a: bool,
             b: bool,
@@ -134,7 +134,7 @@ mod tests {
     )]
     fn test_overflow_packing_u8() {
         #[derive(BitwisePackable)]
-        #[bitpack(size = "i8", overflow = false)]
+        #[rbitpack(size = "i8", overflow = false)]
         struct OverflowExample {
             a: bool,
             b: bool,
@@ -167,7 +167,7 @@ mod tests {
     )]
     fn test_overflow_unpacking_u8() {
         #[derive(BitwisePackable)]
-        #[bitpack(size = "i8", overflow = false)]
+        #[rbitpack(size = "i8", overflow = false)]
         struct OverflowExample {
             a: bool,
             b: bool,
@@ -187,7 +187,7 @@ mod tests {
     #[test]
     fn test_pack_unpack_auto() {
         #[derive(BitwisePackable)]
-        #[bitpack(size = "auto")]
+        #[rbitpack(size = "auto")]
         struct Example {
             a: bool,
             b: bool,

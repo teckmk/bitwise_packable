@@ -1,5 +1,5 @@
 [workspace]
-members=["bitpack", "bitval"]
+members=["rbitpack", "bitval"]
 
 
 [workspace.package]
@@ -7,6 +7,6 @@ authors = ["teckmk <skmaky4@gmail.com>"]
 version = "0.1.0"
 license = "MIT"
 description = "For packing booleans in variables using bitwise operations"
-documentation = "https://github.com/teckmk/bitwise_packable/blob/main/bitpack/README.md"
+documentation = "https://github.com/teckmk/bitwise_packable/blob/main/rbitpack/README.md"
 
 

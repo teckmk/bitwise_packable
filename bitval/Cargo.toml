@@ -7,4 +7,4 @@ description.workspace = true
 documentation.workspace = true
 
 [dev-dependencies]
-bitpack = {path = "../bitpack"}
+rbitpack = {path = "../rbitpack" }

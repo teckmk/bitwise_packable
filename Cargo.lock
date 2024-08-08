@@ -3,20 +3,10 @@
 version = 3
 
 [[package]]
-name = "bitpack"
-version = "0.1.0"
-dependencies = [
- "bitval",
- "proc-macro2",
- "quote",
- "syn",
-]
-
-[[package]]
 name = "bitval"
 version = "0.1.0"
 dependencies = [
- "bitpack",
+ "rbitpack",
 ]
 
 [[package]]
@@ -35,6 +25,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0fa76aaf39101c457836aec0ce2316dbdc3ab723cdda1c6bd4e6ad4208acaca7"
 dependencies = [
  "proc-macro2",
+]
+
+[[package]]
+name = "rbitpack"
+version = "0.1.0"
+dependencies = [
+ "bitval",
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]

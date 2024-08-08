@@ -1,5 +1,5 @@
 [package]
-name = "bitpack"
+name = "rbitpack"
 version.workspace = true
 authors.workspace = true
 license.workspace = true

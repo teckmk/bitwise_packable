@@ -1,7 +1,7 @@
 
-# bitpack
+# rbitpack
 
-The `bitpack` crate provides a procedural macro for packing and unpacking boolean fields of a struct into various bit sizes. This can be particularly useful for reducing memory usage or performing bit-level operations.
+The `rbitpack` crate provides a procedural macro for packing and unpacking boolean fields of a struct into various bit sizes. This can be particularly useful for reducing memory usage or performing bit-level operations.
 
 ## Features
 
@@ -11,13 +11,13 @@ The `bitpack` crate provides a procedural macro for packing and unpacking boolea
 
 ## Usage
 
-To use the `bitpack` macro, add it to your struct as follows:
+To use the `rbitpack` macro, add it to your struct as follows:
 
 ```rust
-use bitpack::BitwisePackable;
+use rbitpack::BitwisePackable;
 
 #[derive(BitwisePackable)]
-#[bitpack(size = "i8", overflow = false)]
+#[rbitpack(size = "i8", overflow = false)]
 struct MyStruct {
     field1: bool,
     field2: bool,
@@ -51,7 +51,7 @@ use bitval::Bitfield;
 
 ```rust
 #[derive(BitwisePackable)]
-#[bitpack(size = "i8")]
+#[rbitpack(size = "i8")]
 struct Example {
     a: bool,
     b: bool,
@@ -67,7 +67,7 @@ let unpacked = Example::unpack(packed);
 
 ```rust
 #[derive(BitwisePackable)]
-#[bitpack(size = "auto")]
+#[rbitpack(size = "auto")]
 struct DynamicExample {
     x: bool,
     y: bool,
