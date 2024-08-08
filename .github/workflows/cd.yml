@@ -13,10 +13,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     # Run this only on tag push after success of CI
-    if: |
-      github.event_name == 'workflow_run' && 
-        github.event.workflow_run.conclusion == 'success' &&
-        startsWith(github.event.workflow_run.head_branch, 'refs/tags/')
+    if: startsWith(github.event.workflow_run.head_branch, 'refs/tags/')
 
     steps:
     - uses: actions/checkout@v4
