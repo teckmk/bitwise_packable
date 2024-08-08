@@ -57,6 +57,6 @@ jobs:
       - build_and_test
     uses: ./.github/workflows/cd.yml
     with:
-      tag_version: ${{ github.ref_name }}
+      tag_name: ${{ github.ref_name }}
 
 
